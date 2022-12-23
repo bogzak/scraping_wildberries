@@ -50,6 +50,11 @@ def get_stars(soup):
 
 
 @try_except
+def get_img(soup):
+    return soup.find("div", attrs={"class": "slide__content img-plug j-wba-card-item"}).find("img").get("src")
+
+
+@try_except
 def get_list_review(soup):
     review_list_items = soup.find_all("div", class_="swiper-slide comment-card j-feedback-slide")
     reviews = []
@@ -61,7 +66,11 @@ def get_list_review(soup):
                                                                                 class_="comment-card__side").find(
             "span")).strip()
 
-        stars = re.sub(r"<span class=\"comment-card__stars stars-line star([0-9])\"></span>", r"\1", stars_str)
+        stars_count = re.sub(r"<span class=\"comment-card__stars stars-line star([0-9])\"></span>", r"\1", stars_str)
+        if stars_count == 5:
+            stars_five = stars_count
+        else:
+            continue
         comment_str = review.find("div", class_="comment-card__content").find("p", class_="comment-card__message "
                                                                                       "j-feedback-text").get_text(
 
@@ -71,7 +80,7 @@ def get_list_review(soup):
         review_info = {
             "name": name,
             "date": date,
-            "review_stars": stars,
+            "review_stars": stars_five,
             "comment": comment
         }
         reviews.append(review_info)
@@ -87,12 +96,14 @@ def parse_reviews():
         h1 = get_h1(soup)
         sku = get_sku(soup)
         stars = get_stars(soup)
+        img = get_img(soup)
         reviews = get_list_review(soup)
 
         product_info = {
             "h1": h1,
             "sku": sku,
             "product_stars": stars,
+            "img": img,
             "reviews": reviews
         }
 

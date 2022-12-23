@@ -43,6 +43,7 @@ class SavePage:
             html_categorie = driver.page_source
             with open(f"data/categories/{self.page}", "w", encoding="utf-8") as file:
                 file.write(html_categorie)
+            return html_categorie
         except Exception as _ex:
             print(_ex)
         finally:

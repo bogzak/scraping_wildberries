@@ -2,6 +2,9 @@ import time
 import random
 import lib.headers
 import lib.config
+import asyncio
+import selenium_async
+import asyncselenium
 
 from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
